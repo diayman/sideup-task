@@ -5,6 +5,7 @@ import type { Product } from "../types/product";
 import ProductCard from "./ProductCard";
 import { FixedSizeGrid as Grid } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
+import { useSidebar } from "../context/SidebarContext";
 
 type ProductListProps = {
   category: string;
@@ -24,6 +25,7 @@ const ProductList: React.FC<ProductListProps> = ({
   category,
   onLowStockChange,
 }) => {
+  const { toggleSidebar } = useSidebar();
   const {
     data: products,
     isLoading,
@@ -55,7 +57,7 @@ const ProductList: React.FC<ProductListProps> = ({
       });
     }
     return largeList;
-  }, [products]);
+  }, [products, ENABLE_SIMULATION]);
 
   useEffect(() => {
     if (simulatedProducts.length > 0) {
@@ -113,10 +115,31 @@ const ProductList: React.FC<ProductListProps> = ({
     );
 
   return (
-    <div className="h-full w-full overflow-hidden pb-8">
-      <h2 className="text-2xl font-bold p-4 text-gray-700 capitalize">
-        {category}
-      </h2>
+    <div className="h-full w-full overflow-hidden pb-12">
+      <div className="flex items-center justify-between p-4">
+        <h2 className="text-2xl font-bold text-gray-700 capitalize">
+          {category}
+        </h2>
+        <button
+          onClick={toggleSidebar}
+          className="md:hidden p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+          aria-label="Toggle sidebar"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
       <AutoSizer>
         {({ height, width }) => {
           const CARD_WIDTH = 250; // min product card width

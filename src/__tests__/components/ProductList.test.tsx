@@ -13,6 +13,7 @@ import axios from "axios";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ProductList from "../../components/ProductList";
 import type { Product } from "../../types/product";
+import { SidebarProvider } from "../../context/SidebarContext";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -41,7 +42,9 @@ const mockProducts: Product[] = [
 const renderWithClient = (ui: React.ReactElement) => {
   const queryClient = new QueryClient();
   return render(
-    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <SidebarProvider>{ui}</SidebarProvider>
+    </QueryClientProvider>
   );
 };
 
@@ -100,7 +103,9 @@ test("shows loading state while fetching data", async () => {
 
   render(
     <QueryClientProvider client={queryClient}>
-      <ProductList category="test" onLowStockChange={() => {}} />
+      <SidebarProvider>
+        <ProductList category="test" onLowStockChange={() => {}} />
+      </SidebarProvider>
     </QueryClientProvider>
   );
 
@@ -121,7 +126,9 @@ test("shows error state when API call fails", async () => {
 
   render(
     <QueryClientProvider client={queryClient}>
-      <ProductList category="test" onLowStockChange={() => {}} />
+      <SidebarProvider>
+        <ProductList category="test" onLowStockChange={() => {}} />
+      </SidebarProvider>
     </QueryClientProvider>
   );
 

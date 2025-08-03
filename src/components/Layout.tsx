@@ -16,7 +16,7 @@ const Layout: React.FC<LayoutProps> = ({
 }) => {
   return (
     <div className="flex h-screen overflow-hidden">
-      <aside className="w-1/5">
+      <aside className="md:w-1/5">
         <Sidebar
           onSelectCategory={onSelectCategory}
           selectedCategory={selectedCategory}
@@ -26,7 +26,9 @@ const Layout: React.FC<LayoutProps> = ({
       <main className="flex-1 overflow-y-auto">{children}</main>
 
       {rightPanel && (
-        <aside className="w-1/5 bg-yellow-50 p-4 border-l">{rightPanel}</aside>
+        <aside className="md:w-1/5 bg-yellow-50 md:p-4 md:border-l">
+          {rightPanel}
+        </aside>
       )}
     </div>
   );

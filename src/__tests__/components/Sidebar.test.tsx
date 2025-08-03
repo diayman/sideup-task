@@ -12,6 +12,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import axios from "axios";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Sidebar from "../../components/Sidebar";
+import { SidebarProvider } from "../../context/SidebarContext";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -26,7 +27,9 @@ Object.defineProperty(window, "innerWidth", {
 const renderWithClient = (ui: React.ReactElement) => {
   const queryClient = new QueryClient();
   return render(
-    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <SidebarProvider>{ui}</SidebarProvider>
+    </QueryClientProvider>
   );
 };
 
@@ -57,7 +60,9 @@ test("uses cached categories without refetching", async () => {
 
   render(
     <QueryClientProvider client={queryClient}>
-      <Sidebar onSelectCategory={() => {}} selectedCategory="" />
+      <SidebarProvider>
+        <Sidebar onSelectCategory={() => {}} selectedCategory="" />
+      </SidebarProvider>
     </QueryClientProvider>
   );
 
@@ -84,7 +89,9 @@ test("shows loading state while fetching categories", async () => {
 
   render(
     <QueryClientProvider client={queryClient}>
-      <Sidebar onSelectCategory={() => {}} selectedCategory="" />
+      <SidebarProvider>
+        <Sidebar onSelectCategory={() => {}} selectedCategory="" />
+      </SidebarProvider>
     </QueryClientProvider>
   );
 
@@ -107,7 +114,9 @@ test("shows error state when API call fails", async () => {
 
   render(
     <QueryClientProvider client={queryClient}>
-      <Sidebar onSelectCategory={() => {}} selectedCategory="" />
+      <SidebarProvider>
+        <Sidebar onSelectCategory={() => {}} selectedCategory="" />
+      </SidebarProvider>
     </QueryClientProvider>
   );
 
