@@ -114,7 +114,7 @@ npm test ProductList.test.tsx
 
 ## 🛠️ Built With
 
-- React 18 + TypeScript + Vite
+- React 19 + TypeScript + Vite
 - React Query (caching)
 - react-window (virtualization)
 - Tailwind CSS (styling)
