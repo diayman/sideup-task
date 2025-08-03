@@ -114,7 +114,7 @@ const ProductList: React.FC<ProductListProps> = ({
   return (
     <div className="h-full w-full overflow-hidden pb-12">
       <div className="flex items-center justify-between p-4">
-        <h2 className="text-2xl font-bold text-gray-700 capitalize">
+        <h2 className="text-lg md:text-2xl font-bold text-gray-700 capitalize">
           {category}
         </h2>
         <button
