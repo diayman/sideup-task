@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useEffect, useMemo } from "react";
 import { useSidebar } from "../context/SidebarContext";
+import { categoryService } from "../services/categoryService";
 
 type SidebarProps = {
   onSelectCategory: (category: string) => void;
@@ -9,10 +9,7 @@ type SidebarProps = {
 };
 
 const fetchCategories = async () => {
-  const { data } = await axios.get<string[]>(
-    "https://fakestoreapi.com/products/categories"
-  );
-  return data;
+  return await categoryService.getAll();
 };
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -58,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const SidebarContent = () => {
     if (isLoading)
       return (
-        <div className="text-center pt-4 sm:pt-8 h-full flex items-start justify-center text-gray-200 text-lg sm:text-2xl font-bold bg-gray-900 px-4">
+        <div className="text-center pt-16 h-full flex items-start justify-center text-gray-200 text-xl font-bold bg-gray-900 px-4">
           Loading...
         </div>
       );

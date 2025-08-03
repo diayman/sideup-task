@@ -9,14 +9,16 @@
  */
 
 import { render, screen, waitFor } from "@testing-library/react";
-import axios from "axios";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ProductList from "../../components/ProductList";
 import type { Product } from "../../types/product";
 import { SidebarProvider } from "../../context/SidebarContext";
+import { productService } from "../../services/productService";
 
-jest.mock("axios");
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+jest.mock("../../services/productService");
+const mockedProductService = productService as jest.Mocked<
+  typeof productService
+>;
 
 const mockProducts: Product[] = [
   {
@@ -49,7 +51,7 @@ const renderWithClient = (ui: React.ReactElement) => {
 };
 
 test("calls onLowStockChange with low stock items", async () => {
-  mockedAxios.get.mockResolvedValueOnce({ data: mockProducts });
+  mockedProductService.getByCategory.mockResolvedValueOnce(mockProducts);
   const lowStockHandler = jest.fn();
 
   renderWithClient(
@@ -74,7 +76,7 @@ test("renders only visible items for large list", async () => {
     rating: { rate: 0, count: 0 },
   }));
 
-  mockedAxios.get.mockResolvedValueOnce({ data: largeList });
+  mockedProductService.getByCategory.mockResolvedValueOnce(largeList);
   const handler = jest.fn();
 
   renderWithClient(<ProductList category="test" onLowStockChange={handler} />);
@@ -99,7 +101,9 @@ test("shows loading state while fetching data", async () => {
     },
   });
 
-  mockedAxios.get.mockImplementation(() => new Promise(() => {}));
+  mockedProductService.getByCategory.mockImplementation(
+    () => new Promise(() => {})
+  );
 
   render(
     <QueryClientProvider client={queryClient}>
@@ -122,7 +126,9 @@ test("shows error state when API call fails", async () => {
     },
   });
 
-  mockedAxios.get.mockRejectedValueOnce(new Error("Network error"));
+  mockedProductService.getByCategory.mockRejectedValueOnce(
+    new Error("Network error")
+  );
 
   render(
     <QueryClientProvider client={queryClient}>
@@ -138,7 +144,7 @@ test("shows error state when API call fails", async () => {
 });
 
 test("handles stock decrease functionality", async () => {
-  mockedAxios.get.mockResolvedValueOnce({ data: mockProducts });
+  mockedProductService.getByCategory.mockResolvedValueOnce(mockProducts);
   const lowStockHandler = jest.fn();
 
   renderWithClient(

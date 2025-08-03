@@ -112,6 +112,30 @@ npm test ProductList.test.tsx
 2. Automatic React + Vite detection
 3. Zero configuration deployment
 
+## 🏗️ Project Structure
+
+```
+src/
+├── components/           # Reusable UI components
+│   ├── Layout.tsx       # Main layout wrapper
+│   ├── Sidebar.tsx      # Category navigation
+│   ├── ProductList.tsx  # Virtualized product grid
+│   ├── ProductCard.tsx  # Individual product display
+│   └── LowStockPanel.tsx # Stock alerts
+├── context/             # React Context providers
+│   └── SidebarContext.tsx # Sidebar state management
+├── services/            # API services
+│   ├── api.ts           # Base API configuration
+│   ├── productService.ts # Product API calls
+│   └── categoryService.ts # Category API calls
+├── pages/               # Main views
+│   └── Dashboard.tsx    # Main dashboard
+├── types/               # TypeScript definitions
+│   └── product.d.ts     # Product interface
+└── __tests__/           # Test files
+    └── components/      # Component tests
+```
+
 ## 🛠️ Built With
 
 - React 19 + TypeScript + Vite

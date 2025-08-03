@@ -9,13 +9,15 @@
  */
 
 import { render, screen, waitFor } from "@testing-library/react";
-import axios from "axios";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Sidebar from "../../components/Sidebar";
 import { SidebarProvider } from "../../context/SidebarContext";
+import { categoryService } from "../../services/categoryService";
 
-jest.mock("axios");
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+jest.mock("../../services/categoryService");
+const mockedCategoryService = categoryService as jest.Mocked<
+  typeof categoryService
+>;
 
 // Mock window.innerWidth to simulate desktop
 Object.defineProperty(window, "innerWidth", {
@@ -34,9 +36,10 @@ const renderWithClient = (ui: React.ReactElement) => {
 };
 
 test("fetches and displays categories", async () => {
-  mockedAxios.get.mockResolvedValueOnce({
-    data: ["electronics", "jewelery"],
-  });
+  mockedCategoryService.getAll.mockResolvedValueOnce([
+    "electronics",
+    "jewelery",
+  ]);
 
   renderWithClient(<Sidebar onSelectCategory={() => {}} selectedCategory="" />);
 
@@ -56,7 +59,7 @@ test("uses cached categories without refetching", async () => {
     },
   });
 
-  mockedAxios.get.mockResolvedValueOnce({ data: ["electronics"] });
+  mockedCategoryService.getAll.mockResolvedValueOnce(["electronics"]);
 
   render(
     <QueryClientProvider client={queryClient}>
@@ -71,9 +74,7 @@ test("uses cached categories without refetching", async () => {
   const cachedData = queryClient.getQueryData(["categories"]);
   expect(cachedData).toEqual(["electronics"]);
 
-  expect(mockedAxios.get).toHaveBeenCalledWith(
-    "https://fakestoreapi.com/products/categories"
-  );
+  expect(mockedCategoryService.getAll).toHaveBeenCalled();
 });
 
 test("shows loading state while fetching categories", async () => {
@@ -85,7 +86,7 @@ test("shows loading state while fetching categories", async () => {
     },
   });
 
-  mockedAxios.get.mockImplementation(() => new Promise(() => {}));
+  mockedCategoryService.getAll.mockImplementation(() => new Promise(() => {}));
 
   render(
     <QueryClientProvider client={queryClient}>
@@ -110,7 +111,9 @@ test("shows error state when API call fails", async () => {
     },
   });
 
-  mockedAxios.get.mockRejectedValueOnce(new Error("Network error"));
+  mockedCategoryService.getAll.mockRejectedValueOnce(
+    new Error("Network error")
+  );
 
   render(
     <QueryClientProvider client={queryClient}>
@@ -128,9 +131,10 @@ test("shows error state when API call fails", async () => {
 });
 
 test("calls onSelectCategory when category is clicked", async () => {
-  mockedAxios.get.mockResolvedValueOnce({
-    data: ["electronics", "jewelery"],
-  });
+  mockedCategoryService.getAll.mockResolvedValueOnce([
+    "electronics",
+    "jewelery",
+  ]);
 
   const mockOnSelectCategory = jest.fn();
 
@@ -146,9 +150,10 @@ test("calls onSelectCategory when category is clicked", async () => {
 });
 
 test("highlights selected category", async () => {
-  mockedAxios.get.mockResolvedValueOnce({
-    data: ["electronics", "jewelery"],
-  });
+  mockedCategoryService.getAll.mockResolvedValueOnce([
+    "electronics",
+    "jewelery",
+  ]);
 
   renderWithClient(
     <Sidebar onSelectCategory={() => {}} selectedCategory="electronics" />

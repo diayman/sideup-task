@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Product } from "../types/product";
 import ProductCard from "./ProductCard";
 import { FixedSizeGrid as Grid } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { useSidebar } from "../context/SidebarContext";
+import { productService } from "../services/productService";
 
 type ProductListProps = {
   category: string;
@@ -13,10 +13,7 @@ type ProductListProps = {
 };
 
 const fetchProductsByCategory = async (category: string) => {
-  const { data } = await axios.get<Product[]>(
-    `https://fakestoreapi.com/products/category/${category}`
-  );
-  return data;
+  return await productService.getByCategory(category);
 };
 
 const ENABLE_SIMULATION = true;
