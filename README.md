@@ -4,7 +4,7 @@ A responsive React application for managing warehouse inventory with real-time s
 
 ## 🚀 Live Demo
 
-**[View Live Demo](https://your-vercel-url.vercel.app)**
+**[View Live Demo](https://warehouse-inventory-ten.vercel.app/)**
 
 ## 🛠️ Setup Instructions
 
